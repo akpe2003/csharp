@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+namespace ForCoursera{
+    class Program{
+        static void Main(String[] agrs)
+        {
+            List <string> product=new List<string>();
+            List <double> price=new List<double>();
+            List <int> quantity=new List<int>();
+            Console.WriteLine("An Inventory Management System!");
+            Console.WriteLine();
+            while(true)
+            {
+                Console.WriteLine("1.Add Product");
+                Console.WriteLine("2.Display Products");
+                Console.WriteLine("3.Remove Product");
+                Console.WriteLine("4.Restock Product");
+                Console.WriteLine("5.Exit");
+                Console.WriteLine("Enter your choice:");
+                int choice=Convert.ToInt32(Console.ReadLine());
+                if(choice==1)
+                {
+                    Console.WriteLine("Enter Product Name:");
+                    string pname=Console.ReadLine();
+                    product.Add(pname);
+                    Console.WriteLine("Enter Price:");
+                    double pprice=Convert.ToDouble(Console.ReadLine());
+                    price.Add(pprice);
+                    Console.WriteLine("Enter Quantity:");
+                    int pquantity=Convert.ToInt32(Console.ReadLine());
+                    quantity.Add(pquantity);
+                    Console.WriteLine("Product Added Successfully!");
+                    Console.WriteLine();
+                }
+                else if(choice==2)
+                {
+                    Console.WriteLine("Product List:");
+                    Console.WriteLine("-------------------------------------------------");
+                    Console.WriteLine("S.No\tProduct Name\tPrice\tQuantity");
+                    for(int i=0;i<product.Count;i++)
+                    {
+                        Console.WriteLine("{0}\t{1}\t{2}\t{3}",i+1,product[i],price[i],quantity[i]);
+                    }
+                    Console.WriteLine("-------------------------------------------------");
+                    Console.WriteLine();
+                }else if(choice==3)
+                {
+                    Console.WriteLine("Enter Product Name to Remove:");
+                    string rname=Console.ReadLine();
+                    string result=RemoveProduct(product,rname);
+                    Console.WriteLine(result);
+                    Console.WriteLine();
+
+                }else if(choice==4)
+                {
+                    Console.WriteLine("Enter Product Name to Restock:");
+                    string rname=Console.ReadLine();
+                    if(product.Contains(rname))
+                    {
+                        int index=product.IndexOf(rname);
+                        Console.WriteLine("Current Quantity: "+quantity[index]);
+                        Console.WriteLine("Enter Threshold Quantity:");
+                        int threshold=Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Enter Restock Amount:");
+                        int restockAmount=Convert.ToInt32(Console.ReadLine());
+                        int newQuantity=Restock(quantity[index],threshold,restockAmount);
+                        quantity[index]=newQuantity;
+                        Console.WriteLine("New Quantity: "+quantity[index]);
+                        Console.WriteLine("Product Restocked Successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Product not found.");
+                    }
+                    Console.WriteLine();
+                }
+                else if(choice==5)
+                {
+                    Console.WriteLine("Exiting the program. Goodbye!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Choice! Please try again.");
+                    Console.WriteLine();
+                }
+
+            }
+
+        }
+    public static int Restock(int currentQuantity, int threshold, int restockAmount)
+        {
+            if (currentQuantity < threshold)
+            {
+                currentQuantity += restockAmount;
+            }
+            return currentQuantity;
+       }
+    public static string RemoveProduct(List<string> products, string productName)
+        {
+            if (products.Contains(productName))
+            {
+                products.Remove(productName);
+                return "Product removed successfully.";
+            }
+            else
+            {
+                return "Product not found.";
+            }
+        }
+    }
+}
